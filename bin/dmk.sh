@@ -36,6 +36,12 @@ shopt -s extglob
 COMMAND=$1
 shift;
 
+if [ -z "$JAVA_HOME" ]; then
+    JAVA_EXECUTABLE=java
+else
+    JAVA_EXECUTABLE=$JAVA_HOME/bin/java
+fi
+
 if [ "$COMMAND" = "start" ]
 then
 
@@ -169,13 +175,6 @@ then
         -Djavax.net.ssl.keyStorePassword=$KEYSTORE_PASSWORD \
         -Dcom.sun.management.jmxremote.ssl=true \
         -Dcom.sun.management.jmxremote.ssl.need.client.auth=false"
-
-    if [ -z "$JAVA_HOME" ]
-    then
-        JAVA_EXECUTABLE=java
-    else
-        JAVA_EXECUTABLE=$JAVA_HOME/bin/java
-    fi
 
     # If we get here we have the correct Java version.
 
