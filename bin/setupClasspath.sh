@@ -26,12 +26,6 @@ CLASSPATH=$CLASSPATH:$KERNEL_HOME/plugins/${file##*/}
 FWCLASSPATH=$FWCLASSPATH,file:$KERNEL_HOME/plugins/${file##*/}
 done
 
-#  Append the console.supportability jar to the classpath to enable ssh
-for file in $KERNEL_HOME/plugins/org.eclipse.equinox.console.ssh_*.jar
-do
-CLASSPATH=$CLASSPATH:$KERNEL_HOME/plugins/${file##*/}
-done
-
 # make sure we have CLASSPATH set
 if [ -z "$CLASSPATH" ]
 then
