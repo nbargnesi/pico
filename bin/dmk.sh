@@ -49,6 +49,7 @@ then
     CONFIG_DIR=$KERNEL_HOME/configuration
     CLEAN_FLAG=
     NO_START_FLAG=
+    ENABLE_JMX=
 
     SHELL_FLAG=
 
@@ -87,6 +88,10 @@ then
                 ;;
         -jmxport)
                 JMX_PORT=$2
+                shift;
+                ;;
+        -enableJMX)
+                ENABLE_JMX=1
                 shift;
                 ;;
         -keystore)
@@ -167,16 +172,18 @@ then
     # Set the required permissions on the JMX configuration files
     chmod 600 $ACCESS_PROPERTIES
 
-    JMX_OPTS=" \
-        $JMX_OPTS \
-        -Dcom.sun.management.jmxremote.port=$JMX_PORT \
-        -Dcom.sun.management.jmxremote.authenticate=true \
-        -Dcom.sun.management.jmxremote.login.config=virgo-kernel \
-        -Dcom.sun.management.jmxremote.access.file="$ACCESS_PROPERTIES" \
-        -Djavax.net.ssl.keyStore=$KEYSTORE_PATH \
-        -Djavax.net.ssl.keyStorePassword=$KEYSTORE_PASSWORD \
-        -Dcom.sun.management.jmxremote.ssl=true \
-        -Dcom.sun.management.jmxremote.ssl.need.client.auth=false"
+    if [ ! -z "$ENABLE_JMX" ]; then
+        JMX_OPTS=" \
+            $JMX_OPTS \
+            -Dcom.sun.management.jmxremote.port=$JMX_PORT \
+            -Dcom.sun.management.jmxremote.authenticate=true \
+            -Dcom.sun.management.jmxremote.login.config=virgo-kernel \
+            -Dcom.sun.management.jmxremote.access.file="$ACCESS_PROPERTIES" \
+            -Djavax.net.ssl.keyStore=$KEYSTORE_PATH \
+            -Djavax.net.ssl.keyStorePassword=$KEYSTORE_PASSWORD \
+            -Dcom.sun.management.jmxremote.ssl=true \
+            -Dcom.sun.management.jmxremote.ssl.need.client.auth=false"
+    fi
 
     # If we get here we have the correct Java version.
 
