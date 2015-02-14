@@ -135,7 +135,9 @@ then
     if [ "$CLEAN_FLAG" ]
     then
         rm -rf $KERNEL_HOME/work
-        rm -rf $KERNEL_HOME/serviceability
+        rm -rf $KERNEL_HOME/logs
+        rm -rf $KERNEL_HOME/dumps
+        rm -rf $KERNEL_HOME/heaps
 
         LAUNCH_OPTS="$LAUNCH_OPTS -clean" #equivalent to setting osgi.clean to "true"
     fi
@@ -191,8 +193,8 @@ then
             $DEBUG_OPTS \
             $JMX_OPTS \
             -XX:+HeapDumpOnOutOfMemoryError \
-            -XX:ErrorFile=$KERNEL_HOME/serviceability/error.log \
-            -XX:HeapDumpPath=$KERNEL_HOME/serviceability/heap_dump.hprof \
+            -XX:ErrorFile=$KERNEL_HOME/logs/error.log \
+            -XX:HeapDumpPath=$KERNEL_HOME/heaps/heap-dump.hprof \
             -Djava.security.auth.login.config=$AUTH_LOGIN \
             -Dorg.eclipse.virgo.kernel.authentication.file=$AUTH_FILE \
             -Djava.io.tmpdir=$TMP_DIR \

@@ -11,9 +11,9 @@
 		</discriminator>
 		<sift>
 			<appender name="${applicationName}_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-				<file>serviceability/logs/${applicationName}/log.log</file>
+				<file>logs/${applicationName}/log.log</file>
 				<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-					<FileNamePattern>serviceability/logs/${applicationName}/log_%i.log</FileNamePattern>
+                    <FileNamePattern>logs/old/${applicationName}/log-%i.log</FileNamePattern>
 					<MinIndex>1</MinIndex>
 					<MaxIndex>4</MaxIndex>
 				</rollingPolicy>
@@ -28,9 +28,9 @@
 	</appender>
 	
 	<appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>serviceability/logs/log.log</file>
+		<file>logs/log.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<FileNamePattern>serviceability/logs/log_%i.log</FileNamePattern>
+            <FileNamePattern>logs/old/log-%i.log</FileNamePattern>
 			<MinIndex>1</MinIndex>
 			<MaxIndex>4</MaxIndex>
 		</rollingPolicy>
@@ -42,6 +42,21 @@
 		</encoder>
 	</appender>
 
+	<appender name="PICO_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/pico.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>logs/old/pico-%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>4</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>4KB</MaxFileSize>
+		</triggeringPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}]\t%level\t%thread\t%msg%ex%n</Pattern>
+		</encoder>
+	</appender>
+
 	<appender name="EVENT_LOG_STDOUT" class="org.eclipse.virgo.medic.log.logback.ReroutingAwareConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-28.28thread &lt;%X{medic.eventCode}&gt; %msg %ex%n</Pattern>
@@ -49,9 +64,9 @@
 	</appender>
 
 	<appender name="EVENT_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>serviceability/eventlogs/eventlog.log</file>
+		<file>logs/eventlog.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<FileNamePattern>serviceability/eventlogs/eventlog_%i.log</FileNamePattern>
+            <FileNamePattern>logs/old/eventlog-%i.log</FileNamePattern>
 			<MinIndex>1</MinIndex>
 			<MaxIndex>4</MaxIndex>
 		</rollingPolicy>
@@ -71,6 +86,18 @@
 	<logger level="INFO" additivity="false" name="org.eclipse.virgo.medic.eventlog.default">
 		<appender-ref ref="SIFTED_LOG_FILE" />
 		<appender-ref ref="LOG_FILE" />
+	</logger>
+
+	<logger level="INFO" additivity="false" name="pico">
+		<appender-ref ref="PICO_LOG_FILE" />
+	</logger>
+
+	<logger level="INFO" additivity="false" name="System.out">
+		<appender-ref ref="PICO_LOG_FILE" />
+	</logger>
+
+	<logger level="INFO" additivity="false" name="System.err">
+		<appender-ref ref="PICO_LOG_FILE" />
 	</logger>
 
 	<root level="INFO">
