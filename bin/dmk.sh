@@ -30,9 +30,6 @@ then
 fi
 
 
-# Run java version check with the discovered java jvm.
-. "$KERNEL_HOME/bin/checkJava.sh"
-
 shopt -s extglob
 	
 # parse the command we executing
