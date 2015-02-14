@@ -188,7 +188,8 @@ then
 
         JAVA_OPTS="$JAVA_OPTS -Xmx512m"
 
-        cd $KERNEL_HOME; exec $JAVA_EXECUTABLE \
+        # TODO configurable exec_name
+        cd $KERNEL_HOME; exec -a pico $JAVA_EXECUTABLE \
             $JAVA_OPTS \
             $DEBUG_OPTS \
             $JMX_OPTS \
